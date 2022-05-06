@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Advice API",
+        "url": "https://api.adviceslip.com/advice",
+        "type": "GET",
+        "headers": "",
+        "body": "",
+        "body_type": "text"
+    },
+    {
+        "name": "HTTPBin",
+        "url": "https://httpbin.org/post",
+        "type": "POST",
+        "headers": "",
+        "body": "",
+        "body_type": "text"
+    }
+]

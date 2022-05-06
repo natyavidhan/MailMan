@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
+import json
 
 ctk.set_appearance_mode("dark")
-# ctk.set_default_color_theme("green")
 
 class App:
     def __init__(self, root):
@@ -11,6 +11,9 @@ class App:
         self.root.title("MailMan")
         self.root.geometry("950x470")
         self.root.resizable(False, False)
+
+        self.data = json.load(open("data.json"))
+        requests = [i["name"] for i in self.data]
 
         self.header = ctk.CTkFrame(self.root, corner_radius=10)
         self.header.place(width=445, height=80, x=25, y=20)
@@ -22,8 +25,9 @@ class App:
         self.active_request_frame.place(width=445, height=80, x=480, y=20)
 
         ctk.CTkLabel(self.active_request_frame, text="Active Request", text_font=("Acme", 15, "bold")).place(x=10, y=0, width=180, height=80)
-        self.current_request = ttk.Combobox(self.active_request_frame, values=["Request 1", "Request 2", "Request 3", "Request 4", "Request 5"], state="readonly")
+        self.current_request = ttk.Combobox(self.active_request_frame, values=requests, state="readonly")
         self.current_request.place(x=200, y=30, width=235, height=25)
+        self.current_request.bind("<<ComboboxSelected>>", self.load_request)
 
         self.headers_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.headers_frame.place(width=445, height=145, x=25, y=135)
@@ -60,6 +64,24 @@ class App:
 
     def new_request(self):
         pass
+
+    def load_request(self, args):
+        curr_request = self.current_request.get()
+        for i in self.data:
+            if i["name"] == curr_request:
+                self.url.delete(0, tk.END)
+                self.url.insert(tk.END, i["url"])
+
+                self.request_type.set(i["type"])
+
+                self.headers_input.delete(1.0, tk.END)
+                self.headers_input.insert(tk.END, i["headers"])
+
+                self.body_input.delete(1.0, tk.END)
+                self.body_input.insert(tk.END, i["body"])
+
+                self.body_types.set(i["body_type"])
+                break
 
 
 if __name__ == "__main__":
