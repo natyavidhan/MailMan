@@ -24,7 +24,7 @@
         "body_type": "text"
     },
     {
-        "name": "another one",
+        "name": "PUT",
         "url": "https://httpbin.org/put",
         "type": "PUT",
         "headers": "",

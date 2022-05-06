@@ -93,12 +93,14 @@ class App:
             text="Save",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
+            command=self.save_request,
         ).place(x=40, y=15, width=360, height=45)
         ctk.CTkButton(
             self.options_frame,
             text="Rename",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
+            command=self.rename_request,
         ).place(x=40, y=75, width=360, height=45)
         ctk.CTkButton(
             self.options_frame,
@@ -212,6 +214,20 @@ class App:
                 break
         json.dump(self.data, open("data.json", "w"), indent=4)
         
+    def rename_request(self):
+        prompt = ctk.CTkInputDialog(self.root, title="Rename Request", text="New Name")
+        name = prompt.get_input()
+        if name:
+            curr_request = self.current_request.get()
+            for i in self.data:
+                if i["name"] == curr_request:
+                    i["name"] = name
+                    break
+            curr_index = self.current_request.current()
+            self.current_request.config(values=[i["name"] for i in self.data])
+            self.current_request.current(curr_index)
+            json.dump(self.data, open("data.json", "w"), indent=4)
+
 
 if __name__ == "__main__":
     root = ctk.CTk()
