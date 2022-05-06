@@ -29,11 +29,20 @@ class App:
         self.headers_frame.place(width=445, height=145, x=25, y=135)
 
         ctk.CTkLabel(self.headers_frame, text="Headers", text_font=("Acme", 15, "bold")).place(x=25, y=15, width=100, height=30)
-        self.headers_input = tk.Text(self.headers_frame, bg="gray24", borderwidth=2, relief="flat", font=("Acme", 12))
+        self.headers_input = tk.Text(self.headers_frame, bg="gray24", borderwidth=2, relief="flat", font=("Acme", 12), fg="white")
         self.headers_input.place(x=25, y=50, width=395, height=85)
 
         self.body_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.body_frame.place(width=445, height=145, x=25, y=290)
+
+        ctk.CTkLabel(self.body_frame, text="Body", text_font=("Acme", 15, "bold")).place(x=25, y=15, width=100, height=30)
+        self.body_input = tk.Text(self.body_frame, bg="gray24", borderwidth=2, relief="flat", font=("Acme", 12), fg="white")
+        self.body_input.place(x=25, y=50, width=395, height=85)
+
+        ctk.CTkLabel(self.body_frame, text="Type", text_font=("Acme", 15, "bold")).place(x=130, y=15, width=100, height=30)
+        self.body_types = ttk.Combobox(self.body_frame, values=["Text", "JSON", "Form"], state="readonly")
+        self.body_types.place(x=215, y=15, width=100, height=25)
+        self.body_types.current(0)
 
         self.options_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.options_frame.place(width=440, height=260, x=480, y=175)
