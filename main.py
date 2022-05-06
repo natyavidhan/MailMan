@@ -63,7 +63,45 @@ class App:
         self.request_type.place(x=800, y=140, width=120, height=30)
 
     def new_request(self):
-        pass
+        prompt = ctk.CTkToplevel(self.root)
+        prompt.title("New Request")
+        prompt.geometry("400x200")
+        prompt.resizable(False, False)
+
+        ctk.CTkLabel(prompt, text="New Request", text_font=("Acme", 25, "bold")).place(x=0, y=25, width=400, height=30)
+        ctk.CTkLabel(prompt, text="Name", text_font=("Acme", 15, "bold")).place(x=0, y=80, width=115, height=20)
+        ctk.CTkLabel(prompt, text="URL", text_font=("Acme", 15, "bold")).place(x=0, y=110, width=115, height=20)
+        ctk.CTkLabel(prompt, text="Type", text_font=("Acme", 15, "bold")).place(x=0, y=140, width=115, height=20)
+
+        name = ctk.CTkEntry(prompt, text_font=("Acme", 15, "bold"), width=240, corner_radius=10)
+        url = ctk.CTkEntry(prompt, text_font=("Acme", 15, "bold"), width=240, corner_radius=10)
+        typ = ttk.Combobox(prompt, values=["GET", "POST", "PUT", "DELETE"], state="readonly")
+
+        name.place(x=115, y=80)
+        url.place(x=115, y=110)
+        typ.place(x=115, y=140)
+
+        def create_request():
+            data = {
+                "name": name.get(), 
+                "url": url.get(), 
+                "type": typ.get(),
+                "headers": "",
+                "body": "",
+                "body_type": "text"
+                }
+            requests = json.load(open("data.json"))
+            requests.append(data)
+            request_names = [request["name"] for request in requests]
+            self.current_request.config(values=request_names)
+            self.current_request.current(len(request_names)-1)
+            self.load_request("")
+            json.dump(requests, open("data.json", "w"), indent=4) 
+            prompt.destroy()
+
+        ctk.CTkButton(prompt, text="Create", corner_radius=10, text_font=("Acme", 12, "bold"), command=create_request).place(x=115, y=170, width=240, height=25)
+        
+        
 
     def load_request(self, args):
         curr_request = self.current_request.get()
