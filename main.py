@@ -3,7 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
+# ctk.set_default_color_theme("green")
 
 class App:
     def __init__(self, root):
@@ -33,6 +33,11 @@ class App:
 
         self.options_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.options_frame.place(width=440, height=260, x=480, y=175)
+
+        ctk.CTkButton(self.options_frame, text="Save", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=15, width=360, height=45)
+        ctk.CTkButton(self.options_frame, text="Rename", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=75, width=360, height=45)
+        ctk.CTkButton(self.options_frame, text="Delete", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=135, width=360, height=45)
+        ctk.CTkButton(self.options_frame, text="Send", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=195, width=360, height=45)
 
         self.url = tk.Entry(self.root, font=("Acme", 12, "bold"))
         self.url.place(x=480, y=140, width=310, height=30)
