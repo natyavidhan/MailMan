@@ -200,6 +200,18 @@ class App:
                 self.body_types.set(i["body_type"])
                 break
 
+    def save_request(self):
+        curr_request = self.current_request.get()
+        for i in self.data:
+            if i["name"] == curr_request:
+                i["url"] = self.url.get()
+                i["type"] = self.request_type.get()
+                i["headers"] = self.headers_input.get(1.0, tk.END)
+                i["body"] = self.body_input.get(1.0, tk.END)
+                i["body_type"] = self.body_types.get()
+                break
+        json.dump(self.data, open("data.json", "w"), indent=4)
+        
 
 if __name__ == "__main__":
     root = ctk.CTk()
