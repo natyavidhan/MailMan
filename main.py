@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import customtkinter as ctk
 import json
 
@@ -107,6 +107,7 @@ class App:
             text="Delete",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
+            command=self.delete_request,
         ).place(x=40, y=135, width=360, height=45)
         ctk.CTkButton(
             self.options_frame,
@@ -227,6 +228,17 @@ class App:
             self.current_request.config(values=[i["name"] for i in self.data])
             self.current_request.current(curr_index)
             json.dump(self.data, open("data.json", "w"), indent=4)
+
+    def delete_request(self):
+        curr_request = self.current_request.get()
+        for i in self.data:
+            if i["name"] == curr_request:
+                self.data.remove(i)
+                break
+        self.current_request.config(values=[i["name"] for i in self.data])
+        self.current_request.current(0)
+        json.dump(self.data, open("data.json", "w"), indent=4)
+        messagebox.showinfo("Success", "Request deleted")
 
 
 if __name__ == "__main__":

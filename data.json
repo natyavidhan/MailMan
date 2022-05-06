@@ -16,14 +16,6 @@
         "body_type": "text"
     },
     {
-        "name": "Test",
-        "url": "https://httpbin.org/get",
-        "type": "GET",
-        "headers": "",
-        "body": "",
-        "body_type": "text"
-    },
-    {
         "name": "PUT",
         "url": "https://httpbin.org/put",
         "type": "PUT",
