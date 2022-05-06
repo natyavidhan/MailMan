@@ -28,6 +28,10 @@ class App:
         self.headers_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.headers_frame.place(width=445, height=145, x=25, y=135)
 
+        ctk.CTkLabel(self.headers_frame, text="Headers", text_font=("Acme", 15, "bold")).place(x=25, y=15, width=100, height=30)
+        self.headers_input = tk.Text(self.headers_frame, bg="gray24", borderwidth=2, relief="flat", font=("Acme", 12))
+        self.headers_input.place(x=25, y=50, width=395, height=85)
+
         self.body_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.body_frame.place(width=445, height=145, x=25, y=290)
 
@@ -39,8 +43,8 @@ class App:
         ctk.CTkButton(self.options_frame, text="Delete", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=135, width=360, height=45)
         ctk.CTkButton(self.options_frame, text="Send", corner_radius=10, text_font=("Acme", 18, "bold")).place(x=40, y=195, width=360, height=45)
 
-        self.url = tk.Entry(self.root, font=("Acme", 12, "bold"))
-        self.url.place(x=480, y=140, width=310, height=30)
+        self.url = ctk.CTkEntry(self.root, text_font=("Acme", 12, "bold"), width=310, height=30)
+        self.url.place(x=480, y=140)
 
         self.request_type = ttk.Combobox(self.root, values=["GET", "POST", "PUT", "DELETE"], state="readonly")
         self.request_type.place(x=800, y=140, width=120, height=30)
