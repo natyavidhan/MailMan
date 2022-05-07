@@ -22,5 +22,13 @@
         "headers": "",
         "body": "",
         "body_type": "text"
+    },
+    {
+        "name": "HTTPBin_GET",
+        "url": "https://httpbin.org/get",
+        "type": "GET",
+        "headers": "test=lool haha\n\n\n",
+        "body": "ok= ook\ntest= no\n\n",
+        "body_type": "Form"
     }
 ]

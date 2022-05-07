@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import customtkinter as ctk
 import json
+import requests
 
 ctk.set_appearance_mode("dark")
 
@@ -114,6 +115,7 @@ class App:
             text="Send",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
+            command=self.send_request,
         ).place(x=40, y=195, width=360, height=45)
 
         self.url = ctk.CTkEntry(
@@ -214,7 +216,7 @@ class App:
                 i["body_type"] = self.body_types.get()
                 break
         json.dump(self.data, open("data.json", "w"), indent=4)
-        
+
     def rename_request(self):
         prompt = ctk.CTkInputDialog(self.root, title="Rename Request", text="New Name")
         name = prompt.get_input()
@@ -239,6 +241,48 @@ class App:
         self.current_request.current(0)
         json.dump(self.data, open("data.json", "w"), indent=4)
         messagebox.showinfo("Success", "Request deleted")
+
+    def send_request(self):
+        curr_request = self.current_request.get()
+        for i in self.data:
+            if i["name"] == curr_request:
+                url = i["url"]
+                typ = i["type"]
+                headers_ = i["headers"]
+                body_ = i["body"]
+                body_type = i["body_type"]
+                break
+
+        headers = {}
+        for i in headers_.split("\n"):
+            if i:
+                key = i.split("=")[0].strip()
+                value = i.replace(key + "=", "")
+                if key and value:
+                    headers[key] = value
+
+        content_type = ""
+
+        if body_type == "JSON":
+            body = json.loads(body_)
+            content_type = "application/json"
+        elif body_type == "Form":
+            body = {}
+            for i in body_.split("\n"):
+                if i:
+                    key = i.split("=")[0].strip()
+                    value = i.replace(key + "=", "")
+                    if key and value:
+                        body[key] = value
+            content_type = "application/x-www-form-urlencoded"
+        else:
+            body = body_
+            content_type = "text/plain"
+
+        headers["Content-Type"] = content_type
+
+        response = requests.request(typ, url, headers=headers, data=body)
+        print(response.text)
 
 
 if __name__ == "__main__":
