@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import customtkinter as ctk
 import json
 import requests
+from datetime import datetime
 
 ctk.set_appearance_mode("dark")
 
@@ -281,8 +282,50 @@ class App:
 
         headers["Content-Type"] = content_type
 
-        response = requests.request(typ, url, headers=headers, data=body)
-        print(response.text)
+        prompt = ctk.CTkToplevel(self.root)
+        prompt.resizable(False, False)
+        prompt.geometry("525x600")
+        prompt.title("Response")
+
+        ctk.CTkLabel(prompt, text="Logs", text_font=("Acme", 18, "bold")).place(x=0, y=15, width=525, height=30)
+        logs = tk.Text(prompt, font=("Acme", 12), wrap=tk.WORD, state="disabled")
+        logs.place(x=15, y=40, width=490, height=140)
+
+        def log(text):
+            log_text = f"{datetime.now().strftime('%H:%M:%S')} - {text}\n"
+            logs.config(state="normal")
+            logs.insert(tk.END, log_text+"\n")
+            logs.config(state="disabled")
+
+        response_frame = ctk.CTkFrame(prompt, corner_radius=10)
+        response_frame.place(x=15, y=200, width=490, height=385)
+
+        ctk.CTkLabel(response_frame, text="Response", text_font=("Acme", 18, "bold")).place(x=0, y=10, width=490, height=30)
+        
+        ctk.CTkLabel(response_frame, text="Text", text_font=("Acme", 12, "bold")).place(x=0, y=65, width=80, height=30)
+        text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
+        text.place(x=85, y=65, width=395, height=140)
+        
+        ctk.CTkLabel(response_frame, text="Headers", text_font=("Acme", 12, "bold")).place(x=0, y=215, width=80, height=30)
+        headers_text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
+        headers_text.place(x=85, y=215, width=395, height=100)
+
+        response_code = ctk.CTkLabel(response_frame, text="Code: ", text_font=("Acme", 12, "bold"))
+        response_code.place(x=0, y=330, width=490, height=30)
+
+
+
+        log("Sending request...")
+        try:
+            response = requests.request(typ, url, headers=headers, data=body)
+            log("Query sent!")
+            log(f"Status code: {response.status_code}")
+        except Exception as e:
+            log(f"Error: {e}")
+            return
+        logs.config(state="disabled")
+
+        print(response.headers)
 
 
 if __name__ == "__main__":
