@@ -305,10 +305,16 @@ class App:
         ctk.CTkLabel(response_frame, text="Text", text_font=("Acme", 12, "bold")).place(x=0, y=65, width=80, height=30)
         text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
         text.place(x=85, y=65, width=395, height=140)
+        text_scroll = tk.Scrollbar(response_frame, orient=tk.VERTICAL, command=text.yview)
+        text_scroll.place(x=470, y=65, width=20, height=140)
+        text.config(yscrollcommand=text_scroll.set)
         
         ctk.CTkLabel(response_frame, text="Headers", text_font=("Acme", 12, "bold")).place(x=0, y=215, width=80, height=30)
         headers_text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
         headers_text.place(x=85, y=215, width=395, height=100)
+        headers_scroll = tk.Scrollbar(response_frame, orient=tk.VERTICAL, command=headers_text.yview)
+        headers_scroll.place(x=470, y=215, width=20, height=100)
+        headers_text.config(yscrollcommand=headers_scroll.set)
 
         response_code = ctk.CTkLabel(response_frame, text="Code: ", text_font=("Acme", 12, "bold"))
         response_code.place(x=0, y=330, width=490, height=30)
@@ -325,7 +331,15 @@ class App:
             return
         logs.config(state="disabled")
 
-        print(response.headers)
+        response_code.config(text=f"Code: {response.status_code}")
+        text.config(state="normal")
+        text.insert(tk.END, response.text)
+        text.config(state="disabled")
+        headers_text.config(state="normal")
+        # response_header = json.dumps(str(response.headers), indent=4)
+        response_header = response.headers
+        headers_text.insert(tk.END, response_header)
+        headers_text.config(state="disabled")
 
 
 if __name__ == "__main__":
