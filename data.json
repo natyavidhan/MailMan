@@ -3,8 +3,8 @@
         "name": "Advice API",
         "url": "https://api.adviceslip.com/advice",
         "type": "GET",
-        "headers": "",
-        "body": "",
+        "headers": "\n",
+        "body": "\n",
         "body_type": "text"
     }
 ]
