@@ -6,29 +6,5 @@
         "headers": "",
         "body": "",
         "body_type": "text"
-    },
-    {
-        "name": "HTTPBin",
-        "url": "https://httpbin.org/post",
-        "type": "POST",
-        "headers": "",
-        "body": "",
-        "body_type": "text"
-    },
-    {
-        "name": "PUT",
-        "url": "https://httpbin.org/put",
-        "type": "PUT",
-        "headers": "",
-        "body": "",
-        "body_type": "text"
-    },
-    {
-        "name": "HTTPBin_GET",
-        "url": "https://httpbin.org/get",
-        "type": "GET",
-        "headers": "test=lool haha\n\n\n",
-        "body": "ok= ook\ntest= no\n\n",
-        "body_type": "Form"
     }
 ]

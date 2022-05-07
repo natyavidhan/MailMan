@@ -90,34 +90,41 @@ class App:
         self.options_frame = ctk.CTkFrame(self.root, corner_radius=10)
         self.options_frame.place(width=440, height=260, x=480, y=175)
 
-        ctk.CTkButton(
+        self.save_btn = ctk.CTkButton(
             self.options_frame,
             text="Save",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
             command=self.save_request,
-        ).place(x=40, y=15, width=360, height=45)
-        ctk.CTkButton(
+        )
+        self.save_btn.place(x=40, y=15, width=360, height=45)
+
+        self.rename_btn = ctk.CTkButton(
             self.options_frame,
             text="Rename",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
             command=self.rename_request,
-        ).place(x=40, y=75, width=360, height=45)
-        ctk.CTkButton(
+        )
+        self.rename_btn.place(x=40, y=75, width=360, height=45)
+
+        self.delete_btn = ctk.CTkButton(
             self.options_frame,
             text="Delete",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
             command=self.delete_request,
-        ).place(x=40, y=135, width=360, height=45)
-        ctk.CTkButton(
+        )
+        self.delete_btn.place(x=40, y=135, width=360, height=45)
+
+        self.send_btn = ctk.CTkButton(
             self.options_frame,
             text="Send",
             corner_radius=10,
             text_font=("Acme", 18, "bold"),
             command=self.send_request,
-        ).place(x=40, y=195, width=360, height=45)
+        )
+        self.send_btn.place(x=40, y=195, width=360, height=45)
 
         self.url = ctk.CTkEntry(
             self.root, text_font=("Acme", 12, "bold"), width=310, height=30
@@ -128,6 +135,11 @@ class App:
             self.root, values=["GET", "POST", "PUT", "DELETE"], state="readonly"
         )
         self.request_type.place(x=800, y=140, width=120, height=30)
+
+        self.save_btn.config(state="disabled")
+        self.rename_btn.config(state="disabled")
+        self.delete_btn.config(state="disabled")
+        self.send_btn.config(state="disabled")
 
     def new_request(self):
         prompt = ctk.CTkToplevel(self.root)
@@ -205,6 +217,11 @@ class App:
 
                 self.body_types.set(i["body_type"])
                 break
+        
+        self.save_btn.config(state="enabled")
+        self.rename_btn.config(state="enabled")
+        self.delete_btn.config(state="enabled")
+        self.send_btn.config(state="enabled")
 
     def save_request(self):
         curr_request = self.current_request.get()
@@ -287,39 +304,55 @@ class App:
         prompt.geometry("525x600")
         prompt.title("Response")
 
-        ctk.CTkLabel(prompt, text="Logs", text_font=("Acme", 18, "bold")).place(x=0, y=15, width=525, height=30)
+        ctk.CTkLabel(prompt, text="Logs", text_font=("Acme", 18, "bold")).place(
+            x=0, y=10, width=525, height=30
+        )
         logs = tk.Text(prompt, font=("Acme", 12), wrap=tk.WORD, state="disabled")
         logs.place(x=15, y=40, width=490, height=140)
 
         def log(text):
             log_text = f"{datetime.now().strftime('%H:%M:%S')} - {text}\n"
             logs.config(state="normal")
-            logs.insert(tk.END, log_text+"\n")
+            logs.insert(tk.END, log_text + "\n")
             logs.config(state="disabled")
 
         response_frame = ctk.CTkFrame(prompt, corner_radius=10)
         response_frame.place(x=15, y=200, width=490, height=385)
 
-        ctk.CTkLabel(response_frame, text="Response", text_font=("Acme", 18, "bold")).place(x=0, y=10, width=490, height=30)
-        
-        ctk.CTkLabel(response_frame, text="Text", text_font=("Acme", 12, "bold")).place(x=0, y=65, width=80, height=30)
-        text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
+        ctk.CTkLabel(
+            response_frame, text="Response", text_font=("Acme", 18, "bold")
+        ).place(x=0, y=10, width=490, height=30)
+
+        ctk.CTkLabel(response_frame, text="Text", text_font=("Acme", 12, "bold")).place(
+            x=0, y=65, width=80, height=30
+        )
+        text = tk.Text(
+            response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled"
+        )
         text.place(x=85, y=65, width=395, height=140)
-        text_scroll = tk.Scrollbar(response_frame, orient=tk.VERTICAL, command=text.yview)
+        text_scroll = tk.Scrollbar(
+            response_frame, orient=tk.VERTICAL, command=text.yview
+        )
         text_scroll.place(x=470, y=65, width=20, height=140)
         text.config(yscrollcommand=text_scroll.set)
-        
-        ctk.CTkLabel(response_frame, text="Headers", text_font=("Acme", 12, "bold")).place(x=0, y=215, width=80, height=30)
-        headers_text = tk.Text(response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled")
+
+        ctk.CTkLabel(
+            response_frame, text="Headers", text_font=("Acme", 12, "bold")
+        ).place(x=0, y=215, width=80, height=30)
+        headers_text = tk.Text(
+            response_frame, font=("Acme", 12), wrap=tk.WORD, state="disabled"
+        )
         headers_text.place(x=85, y=215, width=395, height=100)
-        headers_scroll = tk.Scrollbar(response_frame, orient=tk.VERTICAL, command=headers_text.yview)
+        headers_scroll = tk.Scrollbar(
+            response_frame, orient=tk.VERTICAL, command=headers_text.yview
+        )
         headers_scroll.place(x=470, y=215, width=20, height=100)
         headers_text.config(yscrollcommand=headers_scroll.set)
 
-        response_code = ctk.CTkLabel(response_frame, text="Code: ", text_font=("Acme", 12, "bold"))
+        response_code = ctk.CTkLabel(
+            response_frame, text="Code: ", text_font=("Acme", 12, "bold")
+        )
         response_code.place(x=0, y=330, width=490, height=30)
-
-
 
         log("Sending request...")
         try:
@@ -336,7 +369,6 @@ class App:
         text.insert(tk.END, response.text)
         text.config(state="disabled")
         headers_text.config(state="normal")
-        # response_header = json.dumps(str(response.headers), indent=4)
         response_header = response.headers
         headers_text.insert(tk.END, response_header)
         headers_text.config(state="disabled")
